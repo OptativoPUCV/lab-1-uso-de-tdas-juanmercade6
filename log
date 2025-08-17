@@ -20,3 +20,17 @@ Sun, Aug 17, 2025  6:35:30 PM:
  tests:  9|0
 total_score: 70/70
 9b473bb
+Sun, Aug 17, 2025  6:50:35 PM: 
+ exercises.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+In file included from test.c:5:0:
+exercises.c: In function 'parentesisBalanceados':
+exercises.c:151:4: error: 'return' with no value, in function returning non-void [-Werror]
+    return ;
+    ^~~~~~
+exercises.c:116:5: note: declared here
+ int parentesisBalanceados(char *cadena) {
+     ^~~~~~~~~~~~~~~~~~~~~
+cc1.exe: all warnings being treated as errors
+Compilation failed
+caa0b5d
