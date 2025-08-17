@@ -43,6 +43,11 @@ Al finalizar retorna la lista creada.
 
 List* crea_lista() {
    List* L = create_list();
+   for(int i = 0 ; i <= 10 ; i++){
+      int *num = (int *)malloc(sizeof(int));
+      *num = i;
+      pushBack(L,num);
+   }
    return L;
 }
 
@@ -52,7 +57,13 @@ Crea una función que reciba una lista de enteros (int*) y
 retorne la suma de sus elementos.
 */
 int sumaLista(List *L) {
-   return 0;
+   int sum = 0;
+   int *dato = (int *)first(L);
+   while(dato != NULL){
+      sum += *dato;
+      dato = (int *)next(L);
+   }
+   return sum;
 }
 
 /*
@@ -64,8 +75,18 @@ Asume que popCurrent luego de eliminar un elemento se
 posiciona en el elemento anterior.
 */
 
-void eliminaElementos(List*L, int elem){
-
+void eliminaElementos(List*L, int elemento){
+   int *dato = (int *)first(L);
+   while(dato != NULL){
+      if(*dato == elemento){
+         popCurrent(L);  // Primero eliminamos de la lista
+         free(dato);     // Luego liberamos la memoria
+         dato = (int *)popCurrent(L); // Volvemos al elemento anterior
+      }
+      else {
+         dato = (int *)next(L);
+      }
+   }
 }
 
 /*
@@ -76,6 +97,16 @@ Puedes usar una pila auxiliar.
 */
 
 void copia_pila(Stack* P1, Stack* P2) {
+   Stack* aux = create_stack();
+   void* dato;
+   while((dato = pop(P1)) != NULL){
+      push(aux,dato);
+   }
+   while((dato = pop(aux)) != NULL){
+      push(P1,dato);
+      push(P2,dato);
+   }
+   free(aux);
 }
 
 /*
@@ -86,6 +117,39 @@ paraéntesis balanceados. Retorna 1 si están balanceados,
 */
 
 int parentesisBalanceados(char *cadena) {
+   Stack* P = create_stack();
+   for(int i = 0 ; cadena[i] != '\0' ; i++){
+      char c = cadena[i];
+      if(c == '(' || c == '[' || c == '{'){
+         char *p = (char *) malloc (sizeof(char));
+         *p = c;
+         push(P,p);
+      }
+      else if(c == ')' || c == ']' || c == '}'){
+         char* topE = (char *)top(P);
+         if(topE == NULL){
+            free(P);
+            return 0;
+         }
+         if((c == ')' && *topE == '(' ) || ( c == ']' && *topE == '[' ) ||( c == '}' && *topE == '{')){
+            free(pop(P));
+         }
+         else{
+            while((topE = (char *) pop(P)) != NULL){
+               free(topE);
+            }
+            free(P);
+            return 0;
+         }
+      }
+   }
+   if(top(P) == NULL){
+      free(P);
+      return 1;
+   }
+   while(top(P) != NULL){
+      free(pop(P));
+   }
+   free(P);
    return 0;
 }
-
